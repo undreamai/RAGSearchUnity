@@ -6,6 +6,8 @@ using System.Security.Cryptography;
 
 namespace LLMUnity
 {
+    public delegate void SearchCallback<T>(T message);
+
     public class Saver
     {
         public static void Save(object saveObject, string filePath, string name, FileMode mode = FileMode.Create)

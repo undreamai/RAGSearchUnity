@@ -17,6 +17,7 @@ using System.Runtime.Serialization;
 using System.IO.Compression;
 using System.Reflection;
 using System.Threading.Tasks;
+using System.Net;
 
 namespace LLMUnity
 {
@@ -423,14 +424,73 @@ namespace LLMUnity
 
     public class ModelDownloader
     {
-        public static async Task DownloadAndUnzip(string modelUrl, string dirname, Callback<float> progresscallback = null, bool async = true)
+        public class SearchDownloadStatus
+        {
+            SearchCallback<float> progresscallback;
+
+            public SearchDownloadStatus(SearchCallback<float> progresscallback = null)
+            {
+                this.progresscallback = progresscallback;
+            }
+
+            public void DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
+            {
+                progresscallback?.Invoke(e.ProgressPercentage / 100.0f);
+            }
+        }
+
+        public static async Task DownloadFile(string fileUrl, string savePath, bool overwrite = false, SearchCallback<float> progresscallback = null, bool async=true)
+        {
+            // download a file to the specified path
+            if (File.Exists(savePath) && !overwrite)
+            {
+                Debug.Log($"File already exists at: {savePath}");
+            }
+            else
+            {
+                Debug.Log($"Downloading {fileUrl}...");
+                string tmpPath = Path.Combine(Application.temporaryCachePath, Path.GetFileName(savePath));
+
+                WebClient client = new WebClient();
+                SearchDownloadStatus downloadStatus = new SearchDownloadStatus(progresscallback);
+                client.DownloadProgressChanged += downloadStatus.DownloadProgressChanged;
+                if (async)
+                {
+                    await client.DownloadFileTaskAsync(fileUrl, tmpPath);
+                } else {
+                    client.DownloadFile(fileUrl, tmpPath);
+                }
+
+                AssetDatabase.StartAssetEditing();
+                Directory.CreateDirectory(Path.GetDirectoryName(savePath));
+                File.Move(tmpPath, savePath);
+                AssetDatabase.StopAssetEditing();
+                Debug.Log($"Download complete!");
+            }
+            progresscallback?.Invoke(1f);
+        }
+
+        public static void ExtractZip(string zipPath, string extractToPath)
+        {
+            Debug.Log($"extracting {zipPath} to {extractToPath}");
+            AssetDatabase.StartAssetEditing();
+            if (!Directory.Exists(extractToPath))
+            {
+                Directory.CreateDirectory(extractToPath);
+            }
+            ZipFile.ExtractToDirectory(zipPath, extractToPath);
+            AssetDatabase.StopAssetEditing();
+            Debug.Log($"extraction complete!");
+        }
+
+        public static async Task DownloadAndUnzip(string modelUrl, string dirname, SearchCallback<float> progresscallback = null, bool async = true)
         {
             if (!Directory.Exists(dirname))
             {
 #if UNITY_EDITOR
                 string modelZip = Path.GetTempFileName() + ".zip";
-                await LLMUnitySetup.DownloadFile(modelUrl, modelZip, true, false, null, progresscallback, async);
-                LLMUnitySetup.ExtractZip(modelZip, dirname);
+                await DownloadFile(modelUrl, modelZip, true, progresscallback, async);
+                ExtractZip(modelZip, dirname);
                 File.Delete(modelZip);
 #else
                 throw new Exception($"Can't download file {modelUrl} from play mode!");
@@ -441,11 +501,11 @@ namespace LLMUnity
         public static string ModelExtractDir(string modelUrl)
         {
             string modelBasename = Path.GetFileName(modelUrl).Split("?")[0];
-            string dirname = LLMUnitySetup.GetAssetPath(modelBasename.Replace(".zip", ""));
+            string dirname = Path.Combine(Application.streamingAssetsPath, modelBasename.Replace(".zip", "")).Replace('\\', '/');
             return dirname;
         }
 
-        public static async Task<(string, string)> DownloadUndreamAIAsync(string modelUrl, Callback<float> progresscallback = null)
+        public static async Task<(string, string)> DownloadUndreamAIAsync(string modelUrl, SearchCallback<float> progresscallback = null)
         {
             string dirname = ModelExtractDir(modelUrl);
             string modelName = Path.GetFileName(dirname);
@@ -453,7 +513,7 @@ namespace LLMUnity
             return (Path.Combine(dirname, modelName + ".sentis"), Path.Combine(dirname, modelName + ".tokenizer.json"));
         }
 
-        public static (string, string) DownloadUndreamAI(string modelUrl, Callback<float> progresscallback = null)
+        public static (string, string) DownloadUndreamAI(string modelUrl, SearchCallback<float> progresscallback = null)
         {
             string dirname = ModelExtractDir(modelUrl);
             string modelName = Path.GetFileName(dirname);
@@ -464,21 +524,21 @@ namespace LLMUnity
 
     public class EmbeddingModels
     {
-        public static async Task<EmbeddingModel> BGESmallModel(BackendType backend = BackendType.CPU, Callback<float> progresscallback = null)
+        public static async Task<EmbeddingModel> BGESmallModel(BackendType backend = BackendType.CPU, SearchCallback<float> progresscallback = null)
         {
             string modelUrl = "https://huggingface.co/undreamai/bge-small-en-v1.5-sentis/resolve/main/bge-small-en-v1.5.zip?download=true";
             (string modelPath, string tokenizerPath) = await ModelDownloader.DownloadUndreamAIAsync(modelUrl, progresscallback);
             return new EmbeddingModel(modelPath, tokenizerPath, backend, "sentence_embedding", false, 384);
         }
 
-        public static async Task<EmbeddingModel> BGEBaseModel(BackendType backend = BackendType.CPU, Callback<float> progresscallback = null)
+        public static async Task<EmbeddingModel> BGEBaseModel(BackendType backend = BackendType.CPU, SearchCallback<float> progresscallback = null)
         {
             string modelUrl = "https://huggingface.co/undreamai/bge-base-en-v1.5-sentis/resolve/main/bge-base-en-v1.5.zip?download=true";
             (string modelPath, string tokenizerPath) = await ModelDownloader.DownloadUndreamAIAsync(modelUrl, progresscallback);
             return new EmbeddingModel(modelPath, tokenizerPath, backend, "sentence_embedding", false, 768);
         }
 
-        public static async Task<EmbeddingModel> MiniLMModel(BackendType backend = BackendType.CPU, Callback<float> progresscallback = null)
+        public static async Task<EmbeddingModel> MiniLMModel(BackendType backend = BackendType.CPU, SearchCallback<float> progresscallback = null)
         {
             string modelUrl = "https://huggingface.co/undreamai/all-MiniLM-L6-v2-sentis/resolve/main/all-MiniLM-L6-v2.zip?download=true";
             (string modelPath, string tokenizerPath) = await ModelDownloader.DownloadUndreamAIAsync(modelUrl, progresscallback);
@@ -515,7 +575,7 @@ namespace LLMUnity
             {
                 Type type = typeof(EmbeddingModels);
                 MethodInfo method = type.GetMethod(methodName);
-                object[] arguments = { BackendType.CPU, (Callback<float>)SetDownloadProgress };
+                object[] arguments = { BackendType.CPU, (SearchCallback<float>)SetDownloadProgress };
                 embeddingModel = await (Task<EmbeddingModel>)method.Invoke(null, arguments);
             }
         }
