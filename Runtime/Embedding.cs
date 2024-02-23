@@ -490,6 +490,7 @@ namespace RAGSearchUnity
             }
         }
 
+#if UNITY_EDITOR
         public static async Task DownloadFile(string fileUrl, string savePath, bool overwrite = false, SearchCallback<float> progresscallback = null, bool async=true)
         {
             // download a file to the specified path
@@ -533,6 +534,7 @@ namespace RAGSearchUnity
             AssetDatabase.StopAssetEditing();
             Debug.Log($"extraction complete!");
         }
+#endif
 
         public static async Task DownloadAndUnzip(string modelUrl, string dirname, SearchCallback<float> progresscallback = null, bool async = true)
         {
