@@ -24,7 +24,7 @@ body:
   - type: input
     id: version
     attributes:
-      label: LLMUnity version
+      label: RAGSearchUnity version
       placeholder: X.X.X
     validations:
       required: false
