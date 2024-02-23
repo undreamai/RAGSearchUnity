@@ -24,7 +24,8 @@ namespace RAGSearchUnity
                 options[i] = embdeddingScript.options[i].Item1;
             }
 
-            int newIndex = EditorGUILayout.Popup("Model", embdeddingScript.SelectedOption, options);
+            int newIndex = EditorGUILayout.Popup(embdeddingScript.SelectedOption, options);
+
             if (newIndex != embdeddingScript.SelectedOption)
             {
                 embdeddingScript.SelectModel(newIndex);
