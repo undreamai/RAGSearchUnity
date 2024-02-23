@@ -29,7 +29,7 @@
       "displayName": "HamletSearch",
       "description": "Example demonstrating search of relevant text in the Hamlet play.",
       "path": "Samples~/HamletSearch"
-    },
+    }
    ],
    "author": {
     "name": "Undream AI",
