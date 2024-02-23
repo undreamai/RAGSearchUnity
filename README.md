@@ -57,7 +57,8 @@ In your script you can then use it as follows :unicorn::
 ``` c#
 using RAGSearchUnity;
 
-public class MyScript {
+public class MyScript : MonoBehaviour
+{
   public Embedding embedding;
   SearchEngine search;
 
