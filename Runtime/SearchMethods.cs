@@ -8,7 +8,7 @@ using System.IO;
 using System.IO.Compression;
 
 
-namespace LLMUnity
+namespace RAGSearchUnity
 {
     [DataContract]
     public class SearchMethod

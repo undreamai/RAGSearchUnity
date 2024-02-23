@@ -1,8 +1,8 @@
 {
-  "name": "undream.llmunity.Runtime.Tests",
+  "name": "undream.RAGSearchUnity.Runtime.Tests",
   "references": [
     "Unity.Sentis",
-    "undream.llmunity.Runtime",
+    "undream.RAGSearchUnity.Runtime",
     "Cloud.Unum.USearch"
   ],
   "optionalUnityReferences": [

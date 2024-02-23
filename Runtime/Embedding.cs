@@ -19,7 +19,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Net;
 
-namespace LLMUnity
+namespace RAGSearchUnity
 {
     [DataContract]
     public class EmbeddingModel

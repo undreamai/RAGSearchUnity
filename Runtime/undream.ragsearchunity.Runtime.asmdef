@@ -1,5 +1,5 @@
 {
-    "name": "undream.llmunity.Runtime",
+    "name": "undream.RAGSearchUnity.Runtime",
     "rootNamespace": "",
     "references": [
         "Unity.Sentis",

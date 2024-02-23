@@ -1,9 +1,9 @@
 using NUnit.Framework;
-using LLMUnity;
+using RAGSearchUnity;
 using System.IO;
 using System.Collections.Generic;
 
-namespace LLMUnityTests
+namespace RAGSearchUnityTests
 {
     public class TestDialogueManager: TestWithEmbeddings
     {

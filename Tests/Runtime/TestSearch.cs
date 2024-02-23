@@ -1,9 +1,9 @@
 using NUnit.Framework;
-using LLMUnity;
+using RAGSearchUnity;
 using System;
 using System.IO;
 
-namespace LLMUnityTests
+namespace RAGSearchUnityTests
 {
     public class TestSentenceSplitter
     {

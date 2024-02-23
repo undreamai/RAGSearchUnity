@@ -4,7 +4,7 @@ using System.IO.Compression;
 using System.Runtime.Serialization.Json;
 using System.Security.Cryptography;
 
-namespace LLMUnity
+namespace RAGSearchUnity
 {
     public delegate void SearchCallback<T>(T message);
 

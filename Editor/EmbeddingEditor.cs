@@ -1,6 +1,6 @@
 using UnityEditor;
 
-namespace LLMUnity
+namespace RAGSearchUnity
 {
     [CustomEditor(typeof(Embedding))]
     public class EmbeddingEditor : Editor

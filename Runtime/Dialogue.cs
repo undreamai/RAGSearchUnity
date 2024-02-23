@@ -9,7 +9,7 @@ using System.IO;
 using System.IO.Compression;
 using Cloud.Unum.USearch;
 
-namespace LLMUnity
+namespace RAGSearchUnity
 {
     [DataContract]
     public class Dialogue

@@ -3,7 +3,7 @@ using UnityEngine;
 using System.Diagnostics;
 using Debug = UnityEngine.Debug;
 using System.Text.RegularExpressions;
-using LLMUnity;
+using RAGSearchUnity;
 using System.IO;
 using UnityEngine.UI;
 

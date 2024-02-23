@@ -1,10 +1,10 @@
 using NUnit.Framework;
-using LLMUnity;
+using RAGSearchUnity;
 using Unity.Sentis;
 using System.IO;
 using UnityEngine;
 
-namespace LLMUnityTests
+namespace RAGSearchUnityTests
 {
     public class SetupTests
     {

@@ -1,10 +1,10 @@
 using NUnit.Framework;
-using LLMUnity;
+using RAGSearchUnity;
 using System.IO;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace LLMUnityTests
+namespace RAGSearchUnityTests
 {
     public class TestSearch: TestWithEmbeddings
     {
