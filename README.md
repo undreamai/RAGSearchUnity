@@ -1,14 +1,12 @@
-
-#RAGSearchUnity
-
-<h3 align="center">Semantic search in Unity!</h3>
+<h3 align="center">RAGSearchUnity: Semantic search in Unity!</h3>
+<br>
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 <a href="https://discord.gg/RwXKQb6zdv"><img src="https://discordapp.com/api/guilds/1194779009284841552/widget.png?style=shield"/></a>
 [![Reddit](https://img.shields.io/badge/Reddit-%23FF4500.svg?style=flat&logo=Reddit&logoColor=white)](https://www.reddit.com/user/UndreamAI)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-blue?style=flat&logo=linkedin&labelColor=blue)](https://www.linkedin.com/company/undreamai)
 
-RAGSearchUnity allow to implement semantic search within the Unity engine.<br>
+RAGSearchUnity allows to implement semantic search within the Unity engine.<br>
 It is a Retrieval Augmented Generation (RAG) system empowered by the best open-source retrieval models available.<br>
 RAGSearchUnity is built on top of the awesome [sharp-transformers](https://github.com/huggingface/sharp-transformers) and [usearch](https://github.com/unum-cloud/usearch) libraries.
 
@@ -22,7 +20,7 @@ RAGSearchUnity is built on top of the awesome [sharp-transformers](https://githu
 </sub>
 
 ## At a glance
-- :computer: Cross-platform! Windows, Linux and macOS ([versions](https://github.com/Mozilla-Ocho/llamafile?tab=readme-ov-file#supported-oses))
+- :computer: Cross-platform! Windows, Linux and macOS
 - :house: Runs locally without internet access. No data ever leave the game!
 - :zap: Blazing fast search with Approximate Nearest Neighbors (ANN)
 - :hugs: Support of the best retrieval models
@@ -45,7 +43,7 @@ Tested on Unity: 2021 LTS, 2022 LTS, 2023<br>
 RAGSearchUnity implements a super-fast similarity search functionality with a Retrieval-Augmented Generation (RAG) system.<br>
 This works as follows.
 
-**Building the data** You provide text inputs (a phrase, paragraph, document) to add in the data<br>
+**Building the data** You provide text inputs (a phrase, paragraph, document) to add to the data<br>
 Each input is split into sentences (optional) and encoded into embeddings with a deep learning model.
 
 **Searching** You can then search for an query text input. <br>
@@ -92,6 +90,13 @@ and load them from disk:
 SearchEngine search = SearchEngine.Load(model, "Embeddings.zip");
 ```
 
+You can also specify the delimiters to use or no splitting:
+``` c#
+// use ".", "!", "?" as delimiters
+search = new SearchEngine(model, ".!?");
+// don't split sentences
+search = new SearchEngine(model, null);
+```
 
 If you want to manage multiple independent searches, RAGSearchUnity provides the `MultiSearchEngine` class for ease of use:
 ``` c#
