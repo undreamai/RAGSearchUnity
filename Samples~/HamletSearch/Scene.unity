@@ -2491,7 +2491,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1607798392}
-  - component: {fileID: 1607798391}
+  - component: {fileID: 1607798393}
   m_Layer: 0
   m_Name: Embedding
   m_TagString: Untagged
@@ -2499,20 +2499,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1607798391
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1607798390}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 66e2adadc5fb3e3a5862391f8dd49844, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SelectedOption: 0
-  downloadProgress: 1
 --- !u!4 &1607798392
 Transform:
   m_ObjectHideFlags: 0
@@ -2528,6 +2514,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1607798393
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1607798390}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a329c2b464600fb51a49b46dde889482, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SelectedOption: 0
+  downloadProgress: 1
 --- !u!1 &1736746840
 GameObject:
   m_ObjectHideFlags: 0
@@ -2774,7 +2774,7 @@ MonoBehaviour:
   CharacterSelect: {fileID: 272611076}
   PlayerText: {fileID: 1736746842}
   AIText: {fileID: 379533026}
-  embedding: {fileID: 1607798391}
+  embedding: {fileID: 1607798393}
   GutenbergText: {fileID: 4900000, guid: be0ffe8c7b44139218ffd530749f1644, type: 3}
 --- !u!4 &1842083046
 Transform:

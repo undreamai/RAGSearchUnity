@@ -16,7 +16,7 @@ class HamletSearch : MonoBehaviour
     public TextAsset GutenbergText;
 
     string Character;
-    Dialogue dialogue;
+    MultiSearchEngine searches;
 
     void Start()
     {
@@ -24,7 +24,7 @@ class HamletSearch : MonoBehaviour
         CharacterSelect.onValueChanged.AddListener(DropdownChange);
     }
 
-    Dialogue CreateEmbeddings(EmbeddingModel model, string filename)
+    MultiSearchEngine CreateEmbeddings(EmbeddingModel model, string filename)
     {
         // read the hamlet play for the specified characters
         Dictionary<string, List<(string, string)>> hamlet = ReadGutenbergFile(GutenbergText.text);
@@ -37,20 +37,20 @@ class HamletSearch : MonoBehaviour
         Stopwatch stopwatch = new Stopwatch();
         stopwatch.Start();
         // build the embeddings
-        Dialogue dialogue = new Dialogue(model);
+        MultiSearchEngine searches = new MultiSearchEngine(model);
         foreach ((string act, List<(string, string)> messages) in hamlet)
         {
             foreach ((string actor, string message) in messages)
             {
-                if (characters.Contains(actor)) dialogue.Add(message, actor);
+                if (characters.Contains(actor)) searches.Add(message, actor);
                 // if you want only Hamlet, you could instead do:
-                // if (actor == "HAMLET") dialogue.Add(message);
+                // if (actor == "HAMLET") searches.Add(message);
             }
         }
-        Debug.Log($"embedded {dialogue.NumPhrases()} phrases, {dialogue.NumSentences()} sentences in {stopwatch.Elapsed.TotalMilliseconds / 1000f} secs");
+        Debug.Log($"embedded {searches.NumPhrases()} phrases, {searches.NumSentences()} sentences in {stopwatch.Elapsed.TotalMilliseconds / 1000f} secs");
         // store the embeddings
-        dialogue.Save(filename);
-        return dialogue;
+        searches.Save(filename);
+        return searches;
     }
 
     IEnumerator<string> InitDialogue()
@@ -69,7 +69,7 @@ class HamletSearch : MonoBehaviour
             // load the embeddings
             PlayerText.text = "Loading dialogues...";
             yield return null;
-            dialogue = Dialogue.Load(model, filename);
+            searches = MultiSearchEngine.Load(model, filename);
         }
         else
         {
@@ -77,7 +77,7 @@ class HamletSearch : MonoBehaviour
             // create and store the embeddings (in Unity editor)
             PlayerText.text = "Creating Embeddings (only once)...";
             yield return null;
-            dialogue = CreateEmbeddings(model, filename);
+            searches = CreateEmbeddings(model, filename);
 #else
             // if in play mode throw an error
             throw new System.Exception("The embeddings could not be found!");
@@ -112,9 +112,9 @@ class HamletSearch : MonoBehaviour
         PlayerText.interactable = false;
 
         // search for the most similar text and reply
-        AIText.text = dialogue.Search(message, 1, Character)[0];
+        AIText.text = searches.Search(message, 1, Character)[0];
         // if you want only Hamlet, you could instead do:
-        // AIText.text = dialogue.Search(message)[0];
+        // AIText.text = searches.Search(message)[0];
 
         PlayerText.interactable = true;
         PlayerText.Select();
@@ -125,7 +125,7 @@ class HamletSearch : MonoBehaviour
     {
         // select another character
         Character = CharacterSelect.options[selection].text.ToUpper();
-        Debug.Log($"{Character}: {dialogue.NumPhrases(Character)} phrases available");
+        Debug.Log($"{Character}: {searches.NumPhrases(Character)} phrases available");
     }
 
     public Dictionary<string, List<(string, string)>> ReadGutenbergFile(string text)
@@ -140,7 +140,7 @@ class HamletSearch : MonoBehaviour
         string name2 = null;
         string message = "";
         bool add = false;
-        Dialogue dialogue = null;
+        MultiSearchEngine searches = null;
         int numWords = 0;
         int numLines = 0;
         Dictionary<string, List<(string, string)>> messages = new Dictionary<string, List<(string, string)>>();
@@ -163,7 +163,7 @@ class HamletSearch : MonoBehaviour
 
             if (line.StartsWith("ACT"))
             {
-                if (dialogue != null && message != "")
+                if (searches != null && message != "")
                 {
                     message = message.Trim();
                     messages[act].Add((name, message));
