@@ -1,0 +1,62 @@
+{
+  "name": "ai.undream.llmunity",
+  "version": "1.1.0",
+  "displayName": "LLMUnity",
+  "description": "LLMUnity allows to run and distribute LLM models in the Unity engine.",
+  "unity": "2022.3",
+  "unityRelease": "16f1",
+  "documentationUrl": "https://github.com/undreamai/LLMUnity",
+  "dependencies": {
+    "com.unity.sentis": "1.2.0-exp.2",
+    "com.unity.nuget.newtonsoft-json": "3.2.1"
+  },
+  "testables": [
+    "undream.llmunity.Runtime.Tests"
+  ],
+  "keywords": [
+    "llm",
+    "large language model",
+    "Llama",
+    "ChatGPT",
+    "artificial intelligence",
+    "AI",
+    "NPC",
+    "conversation",
+    "dialogue",
+    "chat",
+    "chatbot",
+    "generative"
+   ],
+   "samples": [
+    {
+      "displayName": "ChatBot",
+      "description": "ChatBot example using LLMUnity.",
+      "path": "Samples~/ChatBot"
+    },
+    {
+      "displayName": "SimpleInteraction",
+      "description": "Minimal example using LLMUnity.",
+      "path": "Samples~/SimpleInteraction"
+    },
+    {
+      "displayName": "ServerClient",
+      "description": "Example with two AIs using LLMUnity.",
+      "path": "Samples~/ServerClient"
+    },
+    {
+      "displayName": "HamletSearch",
+      "description": "Example demonstrating search of relevant text with embeddings.",
+      "path": "Samples~/HamletSearch"
+    },
+    {
+      "displayName": "LLMUnityBot",
+      "description": "A simple bot using a LLM and search of relevant text with embeddings.",
+      "path": "Samples~/LLMUnityBot"
+    }
+   ],
+   "author": {
+    "name": "Undream AI",
+    "email": "hello@undream.ai",
+    "url": "https://undream.ai"
+  }
+}
