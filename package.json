@@ -1,5 +1,5 @@
 {
-  "name": "ai.undream.RAGSearchUnity",
+  "name": "ai.undream.ragsearchunity",
   "version": "1.0.0",
   "displayName": "RAGSearchUnity",
   "description": "RAGSearchUnity implements semantic search in the Unity engine.",
