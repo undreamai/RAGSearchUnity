@@ -21,6 +21,57 @@ using System.Net;
 
 namespace RAGSearchUnity
 {
+
+    public class Embedding : MonoBehaviour
+    {
+        public int SelectedOption = 0;
+
+        [HideInInspector] public float downloadProgress = 1;
+        [HideInInspector] public EmbeddingModel embeddingModel = null;
+        public readonly (string, string)[] options = new (string, string)[]{
+            ("Download model", null),
+            ("bge-small-en-v1.5 (small, best)", "BGESmallModel"),
+            ("bge-base-en-v1.5 (medium, best)", "BGEBaseModel"),
+            ("all-MiniLM-L6-v2 (small, standard)", "MiniLMModel")
+        };
+
+        public void Awake()
+        {
+            SelectModel(SelectedOption);
+        }
+
+        public async void SelectModel(int optionIndex)
+        {
+            SelectedOption = optionIndex;
+#if UNITY_EDITOR
+            EditorUtility.SetDirty(this);
+#endif
+            string methodName = options[SelectedOption].Item2;
+            if (methodName != null)
+            {
+                Type type = typeof(EmbeddingModels);
+                MethodInfo method = type.GetMethod(methodName);
+                object[] arguments = { BackendType.CPU, (SearchCallback<float>)SetDownloadProgress };
+                embeddingModel = await (Task<EmbeddingModel>)method.Invoke(null, arguments);
+            }
+        }
+
+        public void SetDownloadProgress(float progress)
+        {
+            downloadProgress = progress;
+        }
+
+        public EmbeddingModel GetModel()
+        {
+            return embeddingModel;
+        }
+
+        public void OnDestroy()
+        {
+            embeddingModel?.Destroy();
+        }
+    }
+
     [DataContract]
     public class EmbeddingModel
     {
@@ -543,56 +594,6 @@ namespace RAGSearchUnity
             string modelUrl = "https://huggingface.co/undreamai/all-MiniLM-L6-v2-sentis/resolve/main/all-MiniLM-L6-v2.zip?download=true";
             (string modelPath, string tokenizerPath) = await ModelDownloader.DownloadUndreamAIAsync(modelUrl, progresscallback);
             return new EmbeddingModel(modelPath, tokenizerPath, backend, "last_hidden_state", true, 384);
-        }
-    }
-
-    public class Embedding : MonoBehaviour
-    {
-        public int SelectedOption = 0;
-
-        [HideInInspector] public float downloadProgress = 1;
-        [HideInInspector] public EmbeddingModel embeddingModel = null;
-        public readonly (string, string)[] options = new (string, string)[]{
-            ("Download model", null),
-            ("bge-small-en-v1.5 (small, best)", "BGESmallModel"),
-            ("bge-base-en-v1.5 (medium, best)", "BGEBaseModel"),
-            ("all-MiniLM-L6-v2 (small, standard)", "MiniLMModel")
-        };
-
-        public void Awake()
-        {
-            SelectModel(SelectedOption);
-        }
-
-        public async void SelectModel(int optionIndex)
-        {
-            SelectedOption = optionIndex;
-#if UNITY_EDITOR
-            EditorUtility.SetDirty(this);
-#endif
-            string methodName = options[SelectedOption].Item2;
-            if (methodName != null)
-            {
-                Type type = typeof(EmbeddingModels);
-                MethodInfo method = type.GetMethod(methodName);
-                object[] arguments = { BackendType.CPU, (SearchCallback<float>)SetDownloadProgress };
-                embeddingModel = await (Task<EmbeddingModel>)method.Invoke(null, arguments);
-            }
-        }
-
-        public void SetDownloadProgress(float progress)
-        {
-            downloadProgress = progress;
-        }
-
-        public EmbeddingModel GetModel()
-        {
-            return embeddingModel;
-        }
-
-        public void OnDestroy()
-        {
-            embeddingModel?.Destroy();
         }
     }
 }
