@@ -1,6 +1,6 @@
 {
   "name": "ai.undream.ragsearchunity",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "displayName": "RAGSearchUnity",
   "description": "RAGSearchUnity implements semantic search in the Unity engine.",
   "unity": "2022.3",
@@ -29,6 +29,11 @@
       "displayName": "HamletSearch",
       "description": "Example demonstrating search of relevant text in the Hamlet play.",
       "path": "Samples~/HamletSearch"
+    },
+    {
+      "displayName": "MysteryOfTheThreeBots",
+      "description": "Example game using a RAG system.",
+      "path": "Samples~/MysteryOfTheThreeBots"
     }
    ],
    "author": {
