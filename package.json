@@ -29,6 +29,11 @@
       "displayName": "HamletSearch",
       "description": "Example demonstrating search of relevant text in the Hamlet play.",
       "path": "Samples~/HamletSearch"
+    },
+    {
+      "displayName": "MysteryOfTheThreeBots",
+      "description": "Example game using a RAG system.",
+      "path": "Samples~/MysteryOfTheThreeBots"
     }
    ],
    "author": {
